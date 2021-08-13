@@ -155,3 +155,4 @@ QualitySettings:
     Standalone: 2
     WebGL: 2
     Windows Store Apps: 2
+    iPhone: 0
