@@ -5,8 +5,7 @@ using UnityEngine.XR.Management;
 
 public class XR : MonoBehaviour
 {
-    //public GameObject[] HUD;
-    //public GameObject[] HUDVR;
+    public bool ShowHUD;
 
     public GameObject HUD;
     public GameObject HUDVR;
@@ -19,26 +18,30 @@ public class XR : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if(Input.GetKeyDown(KeyCode.P))
         {
             if (Vrbool)
             {
                 StopXR();
-                //ShowObject(HUD, true);
-                //ShowObject(HUDVR, false);
-                HUD.SetActive(true);
-                HUDVR.SetActive(false);
                 Vrbool = false;
             }
             else
             {
                 StartCoroutine(StartXR());
-                //ShowObject(HUD, false);
-                //ShowObject(HUDVR, true);
+                if (ShowHUD == true)
+                {
+                    HUDVR.SetActive(true);
+                }
+                
                 HUD.SetActive(false);
-                HUDVR.SetActive(true);
                 Vrbool = true;
             }
+        }
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            HUD.SetActive(true);
+            HUDVR.SetActive(false);
         }
 
     }
@@ -69,16 +72,9 @@ public class XR : MonoBehaviour
         XRGeneralSettings.Instance.Manager.DeinitializeLoader();
        
         Debug.Log("XR stopped completely.");
+        HUD.SetActive(true);
+        HUDVR.SetActive(false);
 
-    }
-
-    //Enables or Disables an Array of Objects
-    private void ShowObject(GameObject[] item, bool state)
-    {
-        for(int i = 0; i < item.Length; i++)
-        {
-            item[i].SetActive(state);
-        }
     }
 
 }
