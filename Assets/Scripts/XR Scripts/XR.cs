@@ -5,8 +5,11 @@ using UnityEngine.XR.Management;
 
 public class XR : MonoBehaviour
 {
-    public Canvas CanvasObject;
+    //public GameObject[] HUD;
+    //public GameObject[] HUDVR;
+
     public GameObject HUD;
+    public GameObject HUDVR;
     private bool Vrbool;
 
     void Start()
@@ -21,20 +24,27 @@ public class XR : MonoBehaviour
             if (Vrbool)
             {
                 StopXR();
-                Vrbool = false;
+                //ShowObject(HUD, true);
+                //ShowObject(HUDVR, false);
                 HUD.SetActive(true);
+                HUDVR.SetActive(false);
+                Vrbool = false;
             }
             else
             {
                 StartCoroutine(StartXR());
-                Vrbool = true;
-                CanvasObject.GetComponent<Canvas>().enabled = false;
+                //ShowObject(HUD, false);
+                //ShowObject(HUDVR, true);
                 HUD.SetActive(false);
+                HUDVR.SetActive(true);
+                Vrbool = true;
             }
         }
 
     }
 
+
+    //Enables XR (VR)
     public IEnumerator StartXR()
     {
         Debug.Log("Initializing XR...");
@@ -48,17 +58,27 @@ public class XR : MonoBehaviour
         {
             Debug.Log("Starting XR...");
             XRGeneralSettings.Instance.Manager.StartSubsystems();
-            
-
-
         }
     }
 
+    //Disables XR (VR)
     public void StopXR()
     {
         Debug.Log("Stopping XR...");
         XRGeneralSettings.Instance.Manager.StopSubsystems();
         XRGeneralSettings.Instance.Manager.DeinitializeLoader();
+       
         Debug.Log("XR stopped completely.");
+
     }
+
+    //Enables or Disables an Array of Objects
+    private void ShowObject(GameObject[] item, bool state)
+    {
+        for(int i = 0; i < item.Length; i++)
+        {
+            item[i].SetActive(state);
+        }
+    }
+
 }
